@@ -12,6 +12,10 @@ M._new_picker = function(word, opts)
 	local action_state = require('telescope.actions.state')
 	local suggestions = M._get_synonyms(word)
 
+	if not suggestions then
+		return
+	end
+
 	require('telescope.pickers').new(opts, {
 		layout_strategy = 'cursor',
 		layout_config = { width = 0.27, height = 0.55 },
@@ -43,27 +47,42 @@ end
 ---@return table?
 M._get_synonyms = function(word)
 	local url = 'https://www.thesaurus.com/browse/' .. word
-	local data = require('plenary.curl').get(url)
-	if not (data and data.body) then
-		vim.notify('No definition available')
+	local response = require('plenary.curl').get(url)
+	if not (response and response.body) then
+		vim.notify('Unable to fetch from thesaurus.com', vim.log.levels.ERROR)
 		return
 	end
 
-	local json_raw = data.body
+	local json_raw = response.body
 		:match('window.INITIAL_STATE = (.*);')
 		:gsub('undefined', 'null')
 	if not json_raw then
-		vim.notify('Error: Unable to parse response')
+		vim.notify('Unable to parse response', vim.log.levels.ERROR)
 		return
 	end
 	local ok, decoded = pcall(vim.json.decode, json_raw)
-	if not ok or not (decoded and decoded.searchData.tunaApiData.posTabs) then
-		vim.notify('No definition available')
+	if not ok or decoded == nil or not decoded.searchData then
+		vim.notify('Unable to decode response', vim.log.levels.ERROR)
+		return
+	end
+	local data = decoded.searchData.tunaApiData
+	if data == vim.NIL then
+		local msg = ''
+		if decoded.searchData.pageName == 'misspelling' then
+			local suggestions = decoded.searchData.spellSuggestionsData
+			if #suggestions > 0 then
+				msg = 'Did you mean "'..suggestions[1].term..'"?'
+				if #suggestions > 1 then
+					msg = msg .. ' or "'..suggestions[2].term..'"?'
+				end
+			end
+		end
+		vim.notify(msg, vim.log.levels.WARN, { title = 'No definition available' })
 		return
 	end
 
 	local synonyms = {}
-	for _, tab in ipairs(decoded.searchData.tunaApiData.posTabs) do
+	for _, tab in ipairs(data.posTabs) do
 		for _, synonym in ipairs(tab.synonyms) do
 			if synonym.term then
 				table.insert(synonyms, synonym.term)
@@ -85,7 +104,7 @@ end
 ---@param opts table<string, string>
 M.query = function(opts)
 	if not opts.word then
-		vim.notify('You must specify a word')
+		vim.notify('You must specify a word', vim.log.levels.ERROR)
 	end
 	M._new_picker(opts.word, opts)
 end
