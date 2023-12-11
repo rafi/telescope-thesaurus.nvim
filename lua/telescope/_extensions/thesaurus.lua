@@ -12,8 +12,11 @@ local config = {
 
 -- Setup extension config
 local setup = function(opts)
-	config.mappings =
-		vim.tbl_deep_extend('force', config.mappings, require('telescope.config').values.mappings)
+	config.mappings = vim.tbl_deep_extend(
+		'force',
+		config.mappings,
+		require('telescope.config').values.mappings
+	)
 	config = vim.tbl_deep_extend('force', config, opts)
 end
 

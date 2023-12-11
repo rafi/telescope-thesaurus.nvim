@@ -1,13 +1,14 @@
 # Neovim Telescope Thesaurus
 
-> Browse synonyms from thesaurus.com as a [telescope.nvim] extension.
+> Browse synonyms from [dictionaryapi.com] as a [telescope.nvim] extension.
 
 ## Install
 
 Requirements:
 
-- [Neovim] ≥0.8
+- [Neovim] ≥0.9
 - [telescope.nvim]
+- [dictionaryapi.com] API key
 
 Use your favorite package-manager:
 
@@ -36,6 +37,11 @@ use {
 
 </details>
 
+## Setup
+
+Register at [dictionaryapi.com] and get an API key. Set it as
+`vim.g.dictionary_api_key` or `DICTIONARY_API_KEY` environment variable.
+
 ## Usage
 
 - In normal mode, over a word: `:Telescope thesaurus lookup`
@@ -51,3 +57,4 @@ Enjoy!
 
 [Neovim]: https://github.com/neovim/neovim
 [telescope.nvim]: https://github.com/nvim-telescope/telescope.nvim
+[dictionaryapi.com]: https://www.dictionaryapi.com/
