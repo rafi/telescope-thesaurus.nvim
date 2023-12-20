@@ -1,0 +1,362 @@
+[
+  {
+    "meta": {
+      "id": "local",
+      "uuid": "0d08f9cf-a8c8-49d6-8134-4613ff6fe387",
+      "src": "CTcompile",
+      "section": "alpha",
+      "stems": [
+        "local"
+      ],
+      "syns": [
+        [
+          "regional",
+          "aboriginal",
+          "autochthonous",
+          "born",
+          "domestic",
+          "endemic",
+          "indigenous",
+          "native",
+          "original"
+        ]
+      ],
+      "ants": [
+        [
+          "nonindigenous",
+          "nonnative",
+          "imported",
+          "introduced",
+          "transplanted",
+          "alien",
+          "exotic",
+          "foreign",
+          "strange",
+          "expatriate",
+          "immigrant"
+        ]
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "local"
+    },
+    "fl": "adjective",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "as in {it}regional{/it}"
+                  ]
+                ],
+                "sim_list": [
+                  [
+                    {
+                      "wd": "regional"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "aboriginal"
+                    },
+                    {
+                      "wd": "autochthonous"
+                    },
+                    {
+                      "wd": "born"
+                    },
+                    {
+                      "wd": "domestic"
+                    },
+                    {
+                      "wd": "endemic"
+                    },
+                    {
+                      "wd": "indigenous"
+                    },
+                    {
+                      "wd": "native"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "original"
+                    }
+                  ]
+                ],
+                "opp_list": [
+                  [
+                    {
+                      "wd": "nonindigenous"
+                    },
+                    {
+                      "wd": "nonnative"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "imported"
+                    },
+                    {
+                      "wd": "introduced"
+                    },
+                    {
+                      "wd": "transplanted"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "alien"
+                    },
+                    {
+                      "wd": "exotic"
+                    },
+                    {
+                      "wd": "foreign"
+                    },
+                    {
+                      "wd": "strange"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "expatriate"
+                    },
+                    {
+                      "wd": "immigrant"
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "as in regional"
+    ]
+  },
+  {
+    "meta": {
+      "id": "local",
+      "uuid": "32fe21de-0796-4791-acea-be34b78d4f4a",
+      "src": "coll_thes",
+      "section": "alpha",
+      "target": {
+        "tuuid": "95ce92e9-cff4-4fbd-867e-55d4a1da44ab",
+        "tsrc": "collegiate"
+      },
+      "stems": [
+        "local",
+        "locals"
+      ],
+      "syns": [
+        [
+          "affiliate",
+          "branch",
+          "cell",
+          "chapter",
+          "council"
+        ],
+        [
+          "localite",
+          "native",
+          "townie",
+          "year-rounder"
+        ]
+      ],
+      "ants": [],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "local"
+    },
+    "fl": "noun",
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "sn": "1",
+                "dt": [
+                  [
+                    "text",
+                    "a local unit of an organization "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "the truck drivers are members of {it}Local{/it} 349 of the Teamsters' Union"
+                      }
+                    ]
+                  ]
+                ],
+                "syn_list": [
+                  [
+                    {
+                      "wd": "affiliate"
+                    },
+                    {
+                      "wd": "branch"
+                    },
+                    {
+                      "wd": "cell"
+                    },
+                    {
+                      "wd": "chapter"
+                    },
+                    {
+                      "wd": "council"
+                    }
+                  ]
+                ],
+                "rel_list": [
+                  [
+                    {
+                      "wd": "arm"
+                    },
+                    {
+                      "wd": "division"
+                    },
+                    {
+                      "wd": "wing"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "offshoot"
+                    },
+                    {
+                      "wd": "subchapter"
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "lodge"
+                    },
+                    {
+                      "wd": "post"
+                    }
+                  ]
+                ]
+              }
+            ]
+          ],
+          [
+            [
+              "sense",
+              {
+                "sn": "2",
+                "dt": [
+                  [
+                    "text",
+                    "a usually longtime resident of a locality "
+                  ],
+                  [
+                    "vis",
+                    [
+                      {
+                        "t": "few {it}locals{/it} seem to patronize the city's touristy restaurants, leaving them to diners who prefer atmosphere over food"
+                      }
+                    ]
+                  ]
+                ],
+                "syn_list": [
+                  [
+                    {
+                      "wd": "localite"
+                    },
+                    {
+                      "wd": "native"
+                    },
+                    {
+                      "wd": "townie",
+                      "wvrs": [
+                        {
+                          "wvl": "or",
+                          "wva": "towny"
+                        }
+                      ]
+                    },
+                    {
+                      "wd": "year-rounder"
+                    }
+                  ]
+                ],
+                "rel_list": [
+                  [
+                    {
+                      "wd": "denizen"
+                    },
+                    {
+                      "wd": "dweller"
+                    },
+                    {
+                      "wd": "habitant"
+                    },
+                    {
+                      "wd": "inhabitant"
+                    },
+                    {
+                      "wd": "occupant"
+                    },
+                    {
+                      "wd": "resident"
+                    },
+                    {
+                      "wd": "resider"
+                    }
+                  ]
+                ],
+                "near_list": [
+                  [
+                    {
+                      "wd": "excursionist"
+                    },
+                    {
+                      "wd": "sightseer"
+                    },
+                    {
+                      "wd": "traveler",
+                      "wvrs": [
+                        {
+                          "wvl": "or",
+                          "wva": "traveller"
+                        }
+                      ]
+                    }
+                  ],
+                  [
+                    {
+                      "wd": "holidayer"
+                    },
+                    {
+                      "wd": "vacationer"
+                    },
+                    {
+                      "wd": "vacationist"
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "shortdef": [
+      "a local unit of an organization",
+      "a usually longtime resident of a locality"
+    ]
+  }
+]

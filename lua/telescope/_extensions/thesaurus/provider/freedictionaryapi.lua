@@ -95,4 +95,11 @@ function M.parse_result(data)
 	return synonyms, p
 end
 
+---@private
+function M.mock_get()
+	local config = require('telescope._extensions.thesaurus.config')
+	local fixture = config.get_fixture_path() / 'freedictionaryapi.json'
+	return vim.json.decode(fixture:read())
+end
+
 return M

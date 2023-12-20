@@ -6,7 +6,7 @@ local M = {}
 local providers = {
 	'dictionaryapi',
 	'datamuse',
-	'freedictionaryapi'
+	'freedictionaryapi',
 }
 
 local default_config = {
@@ -29,6 +29,14 @@ M.setup = function(user_config)
 	)
 	cfg = vim.tbl_deep_extend('force', cfg, user_config)
 	current_config = cfg
+end
+
+M.get_fixture_path = function()
+	local script_path = vim.fs.dirname(debug.getinfo(1).source:sub(2))
+	local path = require('plenary.path'):new(script_path)
+	path = path:parent():parent():parent()
+	path = path / 'tests' / 'fixtures' / 'provider'
+	return path
 end
 
 return M

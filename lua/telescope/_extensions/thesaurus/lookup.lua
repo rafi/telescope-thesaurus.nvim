@@ -57,7 +57,7 @@ function M.run(word, opts, picker_fn)
 			M.warning_window(prompt_win)
 		end
 		if not (candidates and ok) then
-			return M.error_no_results()
+			return M.error_no_results(candidates)
 		end
 		picker_fn(candidates, preview, should_requery, opts)
 	end, 10)
@@ -158,8 +158,11 @@ function M.error_no_provider(name)
 end
 
 ---@private
-function M.error_no_results()
-	vim.notify('Unable to fetch results', vim.log.levels.ERROR)
+function M.error_no_results(err)
+	vim.notify(
+		'Unable to fetch results: ' .. vim.inspect(err),
+		vim.log.levels.ERROR
+	)
 end
 
 ---@private

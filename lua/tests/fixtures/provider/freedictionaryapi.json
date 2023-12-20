@@ -1,0 +1,133 @@
+[
+	{
+		"word": "local",
+		"phonetic": "/ˈləʊkl̩/",
+		"phonetics": [
+			{
+				"text": "/ˈləʊkl̩/",
+				"audio": ""
+			},
+			{
+				"text": "/ˈloʊkl̩/",
+				"audio": "https://api.dictionaryapi.dev/media/pronunciations/en/local-us.mp3",
+				"sourceUrl": "https://commons.wikimedia.org/w/index.php?curid=1684661",
+				"license": {
+					"name": "BY-SA 3.0",
+					"url": "https://creativecommons.org/licenses/by-sa/3.0"
+				}
+			}
+		],
+		"meanings": [
+			{
+				"partOfSpeech": "noun",
+				"definitions": [
+					{
+						"definition": "A person who lives near a given place.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "It's easy to tell the locals from the tourists."
+					},
+					{
+						"definition": "A branch of a nationwide organization such as a trade union.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "I'm in the TWU, too. Local 6."
+					},
+					{
+						"definition": "A train that stops at all, or almost all, stations between its origin and destination, including very small ones.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "The expresses skipped my station, so I had to take a local."
+					},
+					{
+						"definition": "One's nearest or regularly frequented public house or bar.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "I got barred from my local, so I've started going all the way into town for a drink."
+					},
+					{
+						"definition": "A locally scoped identifier.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "Functional programming languages usually don't allow changing the immediate value of locals once they've been initialized, unless they're explicitly marked as being mutable."
+					},
+					{
+						"definition": "An item of news relating to the place where the newspaper is published.",
+						"synonyms": [],
+						"antonyms": []
+					}
+				],
+				"synonyms": ["stopper"],
+				"antonyms": ["express", "fast"]
+			},
+			{
+				"partOfSpeech": "adjective",
+				"definitions": [
+					{
+						"definition": "From or in a nearby location.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "We prefer local produce."
+					},
+					{
+						"definition": "(of a variable or identifier) Having limited scope (either lexical or dynamic); only being accessible within a certain portion of a program.",
+						"synonyms": [],
+						"antonyms": []
+					},
+					{
+						"definition": "(of a condition or state) Applying to each point in a space rather than the space as a whole.",
+						"synonyms": [],
+						"antonyms": []
+					},
+					{
+						"definition": "Of or pertaining to a restricted part of an organism.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "The patient didn't want to be sedated, so we applied only local anesthesia."
+					},
+					{
+						"definition": "Descended from an indigenous population.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "Hawaiian Pidgin is spoken by the local population."
+					}
+				],
+				"synonyms": ["topical"],
+				"antonyms": ["global"]
+			},
+			{
+				"partOfSpeech": "adverb",
+				"definitions": [
+					{
+						"definition": "In the local area; within a city, state, country, etc.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "It's never been more important to buy local."
+					}
+				],
+				"synonyms": [],
+				"antonyms": []
+			},
+			{
+				"partOfSpeech": "noun",
+				"definitions": [
+					{
+						"definition": "An anesthetic (anesthetic substance) that causes loss of sensation only to the area to which it is applied.",
+						"synonyms": [],
+						"antonyms": []
+					}
+				],
+				"synonyms": [],
+				"antonyms": []
+			}
+		],
+		"license": {
+			"name": "CC BY-SA 3.0",
+			"url": "https://creativecommons.org/licenses/by-sa/3.0"
+		},
+		"sourceUrls": [
+			"https://en.wiktionary.org/wiki/local",
+			"https://en.wiktionary.org/wiki/local%20anesthetic"
+		]
+	}
+]

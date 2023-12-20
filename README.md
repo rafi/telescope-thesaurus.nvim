@@ -3,6 +3,10 @@
 > Browse synonyms & definitions from multiple providers as a [telescope.nvim]
 > extension.
 
+## Screenshot
+
+![Thesaurus screenshot](http://rafi.io/img/project/telescope-thesaurus.nvim/dictionaryapi-popup.png)
+
 ## Install
 
 Requirements:

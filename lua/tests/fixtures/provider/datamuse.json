@@ -1,0 +1,52 @@
+[
+	{
+		"word": "localized",
+		"score": 40033652,
+		"tags": ["syn", "adj", "results_type:primary_rel"]
+	},
+	{
+		"word": "community",
+		"score": 40026135,
+		"tags": ["syn", "n"]
+	},
+	{
+		"word": "native",
+		"score": 40025628,
+		"tags": ["syn", "adj", "n"]
+	},
+	{
+		"word": "district",
+		"score": 40024474,
+		"tags": ["syn", "adj"]
+	},
+	{
+		"word": "homegrown",
+		"score": 40023549,
+		"tags": ["syn", "adj", "n"]
+	},
+	{
+		"word": "topical",
+		"score": 40005398,
+		"tags": ["syn", "adj"]
+	},
+	{
+		"word": "local anaesthetic",
+		"score": 39883412,
+		"tags": ["syn", "n"]
+	},
+	{
+		"word": "local anesthetic",
+		"score": 39878756,
+		"tags": ["syn", "n"]
+	},
+	{
+		"word": "topical anaesthetic",
+		"score": 30034610,
+		"tags": ["syn", "n"]
+	},
+	{
+		"word": "topical anesthetic",
+		"score": 30034610,
+		"tags": ["syn", "n"]
+	}
+]
