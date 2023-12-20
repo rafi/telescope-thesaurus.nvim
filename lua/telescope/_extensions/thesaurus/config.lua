@@ -3,7 +3,11 @@
 
 local M = {}
 
-local providers = { 'dictionaryapi', 'freedictionaryapi' }
+local providers = {
+	'dictionaryapi',
+	'datamuse',
+	'freedictionaryapi'
+}
 
 local default_config = {
 	mappings = {},

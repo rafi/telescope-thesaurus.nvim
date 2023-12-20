@@ -41,6 +41,7 @@ use {
 Supported providers:
 
 - `dictionaryapi` ([dictionaryapi.com]) — Default, **token needed**. (Best results)
+- `datamuse` ([datamuse.com])
 - `freedictionaryapi` ([dictionaryapi.dev])
 
 Register at [dictionaryapi.com] and get an API key. Set it as
@@ -55,7 +56,7 @@ lazy.nvim, here's an example:
   opts = {
     extensions = {
       thesaurus = {
-        provider = 'freedictionaryapi',
+        provider = 'datamuse',
       },
     },
   },
@@ -78,4 +79,5 @@ Enjoy!
 [Neovim]: https://github.com/neovim/neovim
 [telescope.nvim]: https://github.com/nvim-telescope/telescope.nvim
 [dictionaryapi.com]: https://www.dictionaryapi.com/
+[datamuse.com]: https://www.datamuse.com/api/
 [dictionaryapi.dev]: https://dictionaryapi.dev/
