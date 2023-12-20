@@ -1,6 +1,7 @@
 # Neovim Telescope Thesaurus
 
-> Browse synonyms from [dictionaryapi.com] as a [telescope.nvim] extension.
+> Browse synonyms & definitions from multiple providers as a [telescope.nvim]
+> extension.
 
 ## Install
 
@@ -8,7 +9,6 @@ Requirements:
 
 - [Neovim] ≥0.9
 - [telescope.nvim]
-- [dictionaryapi.com] API key
 
 Use your favorite package-manager:
 
@@ -17,9 +17,8 @@ Use your favorite package-manager:
 
 ```lua
 {
-  'rafi/telescope-thesaurus.nvim',
-  dependencies = { 'nvim-telescope/telescope.nvim' },
-  version = false,
+  'nvim-telescope/telescope.nvim',
+  dependencies = { 'rafi/telescope-thesaurus.nvim' },
 },
 ```
 
@@ -39,15 +38,36 @@ use {
 
 ## Setup
 
+Supported providers:
+
+- `dictionaryapi` ([dictionaryapi.com]) — Default, **token needed**. (Best results)
+- `freedictionaryapi` ([dictionaryapi.dev])
+
 Register at [dictionaryapi.com] and get an API key. Set it as
 `vim.g.dictionary_api_key` or `DICTIONARY_API_KEY` environment variable.
 
+To set a different provider, set options from Telescope config. If you're using
+lazy.nvim, here's an example:
+
+```lua
+{
+  'nvim-telescope/telescope.nvim',
+  opts = {
+    extensions = {
+      thesaurus = {
+        provider = 'freedictionaryapi',
+      },
+    },
+  },
+}
+```
+
 ## Usage
 
-- In normal mode, over a word: `:Telescope thesaurus lookup`
+- In normal mode, when cursor over a word: `:Telescope thesaurus lookup`
 - Query word manually: `:Telescope thesaurus query word=hello`
 
-Bind the lookup command to a keymapping, e.g.:
+Bind the lookup command to a key-mapping, e.g.:
 
 ```lua
 vim.keymap.set('n', '<localleader>k', '<cmd>Telescope thesaurus lookup<CR>')
@@ -58,3 +78,4 @@ Enjoy!
 [Neovim]: https://github.com/neovim/neovim
 [telescope.nvim]: https://github.com/nvim-telescope/telescope.nvim
 [dictionaryapi.com]: https://www.dictionaryapi.com/
+[dictionaryapi.dev]: https://dictionaryapi.dev/
