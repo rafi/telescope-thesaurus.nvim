@@ -20,15 +20,13 @@ local setup = function(opts)
 	config = vim.tbl_deep_extend('force', config, opts)
 end
 
--- Sub-commands
-local lookup = require('telescope._extensions.thesaurus.lookup').lookup
-local query = require('telescope._extensions.thesaurus.lookup').query
+local extension = require('telescope._extensions.thesaurus.lookup')
 
 -- Register plugin
 return telescope.register_extension({
 	setup = setup,
 	exports = {
-		lookup = lookup,
-		query = query,
+		lookup = extension.lookup,
+		query = extension.query,
 	},
 })
