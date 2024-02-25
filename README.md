@@ -48,7 +48,7 @@ Supported providers:
 - `datamuse` ([datamuse.com])
 - `freedictionaryapi` ([dictionaryapi.dev])
 
-Register at [dictionaryapi.com] and get an API key. Set it as
+Register at [dictionaryapi.com] and get an API key (type: `Collegiate Thesaurus`). Set it as
 `vim.g.dictionary_api_key` or `DICTIONARY_API_KEY` environment variable.
 
 To set a different provider, set options from Telescope config. If you're using
