@@ -1,0 +1,118 @@
+*thesaurus.txt*  Browse synonyms and definitions in a snacks or telescope picker
+
+                                        *thesaurus* *telescope-thesaurus.nvim*
+
+Looks up the word under the cursor, or any word, in a web thesaurus and
+shows the synonyms in a |snacks.nvim| or |telescope.nvim| picker, with
+definitions in the preview when the provider has them. Requests run in the
+background with curl, so the editor stays responsive while a "Loading..."
+popup shows.
+
+Requirements: Neovim 0.11+, snacks.nvim or telescope.nvim, and `curl` in
+$PATH.
+
+==============================================================================
+CONTENTS                                               *thesaurus-contents*
+
+  1. Quickstart ...................................... |thesaurus-quickstart|
+  2. Usage ................................................ |thesaurus-usage|
+  3. Configuration ...................................... |thesaurus-config|
+  4. Providers ........................................ |thesaurus-providers|
+  5. Health .............................................. |thesaurus-health|
+
+==============================================================================
+1. QUICKSTART                                        *thesaurus-quickstart*
+
+Install the plugin next to snacks.nvim or telescope.nvim. No `setup()` call
+is needed.
+Pick a provider that works without a key and map the lookup: >lua
+
+    vim.g.thesaurus = { provider = 'freedictionaryapi' }
+    vim.keymap.set('n', '<localleader>k', '<Plug>(ThesaurusLookup)')
+<
+Put the cursor on a word and press the key. Pick a synonym with <CR> and it
+replaces the word.
+
+==============================================================================
+2. USAGE                                                  *thesaurus-usage*
+
+                                                                *:Thesaurus*
+:Thesaurus [lookup]     Look up the keyword under the cursor, or the next
+                        one on the line (like |<cword>|). Picking a synonym
+                        replaces that word, even when the cursor was before
+                        it. The word is left alone if it changed meanwhile.
+
+:Thesaurus query {word} Look up {word}, which may have spaces. Picking a
+                        word yanks it into |v:register|.
+
+                                                  *<Plug>(ThesaurusLookup)*
+<Plug>(ThesaurusLookup) Normal mode map for `:Thesaurus lookup`.
+
+The telescope extension offers the same, always in a telescope picker: >vim
+
+    :Telescope thesaurus lookup
+    :Telescope thesaurus query word=hello
+<
+For an unknown word, providers may return suggestions instead. The picker
+title says the word was not found. Picking a suggestion looks it up, and a
+synonym from that picker still replaces the original word.
+
+When a word has no results, the picker opens empty with the title
+`No results for "word"`. When the lookup fails, no picker opens and a
+notification says why: curl errors or HTTP errors (such as a rejected key).
+
+Lua API:
+
+thesaurus.lookup({opts})                                *thesaurus.lookup()*
+    Look up the word under the cursor. {opts} are options for the picker,
+    passed to telescope's `pickers.new()` or merged over the
+    `Snacks.picker.pick()` spec. `opts.picker` overrides the configured
+    picker.
+
+    The snacks picker shows the candidates on the left (30%) and the
+    definitions on the right (70%). Without definitions it is a plain list.
+    Pass `layout` in {opts} to change it.
+
+thesaurus.query({opts})                                  *thesaurus.query()*
+    Look up `opts.word`. Other keys are the same as for |thesaurus.lookup()|.
+
+==============================================================================
+3. CONFIGURATION                                         *thesaurus-config*
+                                                              *g:thesaurus*
+
+Options go in `vim.g.thesaurus`, read on first use: >lua
+
+    vim.g.thesaurus = {
+      -- 'dictionaryapi', 'datamuse' or 'freedictionaryapi'
+      provider = 'dictionaryapi',
+      -- 'auto', 'snacks' or 'telescope'. 'auto' uses snacks.nvim when
+      -- installed, else telescope.nvim.
+      picker = 'auto',
+      -- dictionaryapi.com key. Defaults to $DICTIONARY_API_KEY.
+      api_key = nil,
+    }
+<
+Options from `telescope.setup({ extensions = { thesaurus = {...} } })` are
+applied too. `vim.g.thesaurus` wins over them.
+
+An invalid table is reported once, naming the field, and left out.
+`vim.g.dictionary_api_key` is deprecated in favor of `api_key`.
+
+==============================================================================
+4. PROVIDERS                                          *thesaurus-providers*
+
+dictionaryapi       https://www.dictionaryapi.com/ (Merriam-Webster). The
+                    default and the best results, with definitions,
+                    antonyms and examples. Needs a free API key.
+datamuse            https://www.datamuse.com/api/. Words with a similar
+                    meaning, no preview.
+freedictionaryapi   https://dictionaryapi.dev/. Definitions and synonyms,
+                    no key.
+
+==============================================================================
+5. HEALTH                                                *thesaurus-health*
+
+`:checkhealth thesaurus` checks the Neovim version, curl, the options
+(invalid values and unknown keys), which picker is used and the
+dictionaryapi.com key.
+vim:tw=78:ts=8:noet:ft=help:norl:
