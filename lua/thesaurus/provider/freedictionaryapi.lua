@@ -1,50 +1,36 @@
 -- Telescope-thesaurus: Free Dictionary API provider
 -- https://github.com/rafi/telescope-thesaurus.nvim
 
+local http = require('thesaurus.http')
+
 local M = {}
 
-local url = 'https://api.dictionaryapi.dev/api/v2/entries/en/'
+M.url = 'https://api.dictionaryapi.dev/api/v2/entries/en/'
 
 -- Lookup words
----@private
 ---@param word string
----@return table?, table, boolean
-function M.query(word)
-	local data = M._get(word)
-	if not data then
-		return {}, {}, false
-	end
-
-	if data.title and data.title ~= '' then
-		return { '' }, { data.message }, false
-	end
-
-	local words, preview = M.parse_result(data)
-	return words, preview, false
+---@param done thesaurus.Done
+function M.query(word, done)
+	http.get(M.url .. http.encode(word), function(res)
+		-- Unknown words are a 404 with a JSON title and message. Return no
+		-- candidates, so the picker says so.
+		local data = res.data
+		if res.status == 404 and type(data) == 'table' and data.message then
+			return done({ candidates = {}, preview = {}, requery = false })
+		end
+		if res.err then
+			return done(nil, res.err)
+		end
+		local ok, words, preview = pcall(M.parse_result, data)
+		if not ok then
+			return done(nil, 'Unexpected response from dictionaryapi.dev: ' .. words)
+		end
+		done({ candidates = words, preview = preview, requery = false })
+	end)
 end
 
----@private
-function M._get(word, params)
-	local response = require('plenary.curl').get(url .. word, { query = params })
-	if not (response and response.body) then
-		vim.notify('Unable to fetch from ' .. url, vim.log.levels.ERROR)
-		return
-	end
-
-	local ok, data = pcall(vim.json.decode, response.body)
-	if not ok or data == nil then
-		vim.notify(
-			'Unable to decode response:' .. response.body,
-			vim.log.levels.ERROR
-		)
-		return
-	end
-	return data
-end
-
----@private
----@param data table
----@return table?, table
+---@param data table decoded response
+---@return string[] synonyms, string[] preview
 function M.parse_result(data)
 	local p = {}
 	local synonyms = {}
@@ -59,8 +45,8 @@ function M.parse_result(data)
 
 	local function add_ants(item)
 		if #item.antonyms > 0 then
-			local ants = table.concat(vim.tbl_flatten(item.antonyms), '; ')
-			table.insert(p, '  antonyms: ' .. ants)
+			local ants = vim.iter(item.antonyms):flatten(math.huge):totable()
+			table.insert(p, '  antonyms: ' .. table.concat(ants, '; '))
 		end
 	end
 
@@ -93,13 +79,6 @@ function M.parse_result(data)
 	end
 
 	return synonyms, p
-end
-
----@private
-function M.mock_get()
-	local config = require('telescope._extensions.thesaurus.config')
-	local fixture = config.get_fixture_path() / 'freedictionaryapi.json'
-	return vim.json.decode(fixture:read())
 end
 
 return M

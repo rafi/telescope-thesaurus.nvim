@@ -1,63 +1,46 @@
 -- Telescope-thesaurus: Dictionary API dot com provider
 -- https://github.com/rafi/telescope-thesaurus.nvim
 
+local http = require('thesaurus.http')
+
 local M = {}
 
-local url = 'https://www.dictionaryapi.com/api/v3/references/thesaurus/json/'
+M.url = 'https://www.dictionaryapi.com/api/v3/references/thesaurus/json/'
 
 -- Lookup words
----@private
 ---@param word string
----@return table?, table, boolean
-function M.query(word)
-	local token = vim.g.dictionary_api_key
+---@param done thesaurus.Done
+function M.query(word, done)
+	local token = require('thesaurus.config').api_key()
 	if not token then
-		token = vim.env.DICTIONARY_API_KEY
-	end
-	if not token then
-		vim.notify(
-			'Set dictionaryapi.com token as vim.g.dictionary_api_key or $DICTIONARY_API_KEY',
-			vim.log.levels.ERROR
+		return done(
+			nil,
+			'Set a dictionaryapi.com key as vim.g.thesaurus.api_key or $DICTIONARY_API_KEY'
 		)
-		return {}, {}, false
 	end
-
-	local data = M._get(word, { key = token })
-	if not data then
-		return {}, {}, false
-	end
-
-	-- Word not found, return suggestions.
-	if type(data[1]) == 'string' then
-		return data, {}, true
-	end
-
-	local words, preview = M.parse_result(data)
-	return words, preview, false
+	local url = http.url(M.url .. http.encode(word), { key = token })
+	http.get(url, function(res)
+		if res.err then
+			return done(nil, res.err)
+		end
+		local data = res.data
+		if type(data) ~= 'table' then
+			return done(nil, 'Unexpected response from dictionaryapi.com')
+		end
+		-- Word not found, return suggestions.
+		if type(data[1]) == 'string' then
+			return done({ candidates = data, preview = {}, requery = true })
+		end
+		local ok, words, preview = pcall(M.parse_result, data)
+		if not ok then
+			return done(nil, 'Unexpected response from dictionaryapi.com: ' .. words)
+		end
+		done({ candidates = words, preview = preview, requery = false })
+	end)
 end
 
----@private
-function M._get(word, params)
-	local response = require('plenary.curl').get(url .. word, { query = params })
-	if not (response and response.body) then
-		vim.notify('Unable to fetch from ' .. url, vim.log.levels.ERROR)
-		return
-	end
-
-	local ok, data = pcall(vim.json.decode, response.body)
-	if not ok or data == nil or #data == 0 then
-		vim.notify(
-			'Unable to decode response:' .. response.body,
-			vim.log.levels.ERROR
-		)
-		return
-	end
-	return data
-end
-
----@private
----@param data table
----@return table?, table
+---@param data table decoded response
+---@return string[] synonyms, string[] preview
 function M.parse_result(data)
 	local p = {}
 	local synonyms = {}
@@ -83,8 +66,8 @@ function M.parse_result(data)
 		end
 		-- Parse antonyms as a semi-colon separated list with prefix.
 		if has_ants then
-			local ants = table.concat(vim.tbl_flatten(result.meta.ants), '; ')
-			table.insert(p, '  antonyms: ' .. ants)
+			local ants = vim.iter(result.meta.ants):flatten(math.huge):totable()
+			table.insert(p, '  antonyms: ' .. table.concat(ants, '; '))
 		end
 		if has_stems or has_ants then
 			table.insert(p, '')
@@ -117,13 +100,6 @@ function M.parse_result(data)
 	end
 
 	return synonyms, p
-end
-
----@private
-function M.mock_get()
-	local config = require('telescope._extensions.thesaurus.config')
-	local fixture = config.get_fixture_path() / 'dictionaryapi.json'
-	return vim.json.decode(fixture:read())
 end
 
 return M
