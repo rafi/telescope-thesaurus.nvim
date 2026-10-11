@@ -86,7 +86,8 @@ function M.run(word, target, opts)
 		return notify(perr --[[@as string]])
 	end
 	local provider = require('thesaurus.provider.' .. cfg.provider) ---@type thesaurus.Provider
-	local close_loading = pickers.loading(word, cfg.provider)
+	local close_loading = cfg.loading and pickers.loading(word, cfg.provider)
+		or function() end
 	provider.query(word, function(result, err, level)
 		close_loading()
 		if not result then

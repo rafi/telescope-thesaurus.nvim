@@ -90,10 +90,16 @@ Options go in `vim.g.thesaurus`, read on first use: >lua
       picker = 'auto',
       -- dictionaryapi.com key. Defaults to $DICTIONARY_API_KEY.
       api_key = nil,
+      -- Show a "Loading..." popup while the word is looked up.
+      loading = true,
     }
 <
 Options from `telescope.setup({ extensions = { thesaurus = {...} } })` are
 applied too. `vim.g.thesaurus` wins over them.
+
+The picker is compact by default. A layout you set wins: `layout_strategy`
+or `layout_config` in `telescope.setup({ defaults = ... })`, or
+`picker.layout` or `picker.sources.thesaurus.layout` in snacks.
 
 An invalid table is reported once, naming the field, and left out.
 `vim.g.dictionary_api_key` is deprecated in favor of `api_key`.

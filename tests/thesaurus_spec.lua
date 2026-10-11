@@ -364,6 +364,75 @@ T['picker']['found words have no not-found title'] = function(picker)
 	H.eq(titles():find('No results', 1, true), nil)
 end
 
+-- Width of the first window with filetype `ft` that matches, else -1.
+---@param ft string
+---@return integer
+local function win_width(ft)
+	return child.lua_get(([[(function()
+		for _, w in ipairs(vim.api.nvim_list_wins()) do
+			if vim.bo[vim.api.nvim_win_get_buf(w)].filetype == %q then
+				return vim.api.nvim_win_get_width(w)
+			end
+		end
+		return -1
+	end)()]]):format(ft))
+end
+
+T['picker']['telescope follows the global layout from setup()'] = function()
+	start({ provider = 'datamuse', picker = 'telescope' })
+	stub_curl({ http(fixture('datamuse'), 200), http(fixture('datamuse'), 200) })
+	set_line('local', 0)
+	child.lua([[require('thesaurus').lookup()]])
+	settle()
+	local compact = win_width('TelescopePrompt')
+	child.type_keys('<Esc><Esc>')
+	closed()
+
+	child.lua([[
+		require('telescope').setup({ defaults = { layout_strategy = 'vertical' } })
+		require('thesaurus').lookup()
+	]])
+	settle()
+	-- Compact is a fraction of the screen. Vertical is 80% of it.
+	H.eq(compact < 80, true)
+	H.eq(win_width('TelescopePrompt') > 100, true)
+end
+
+T['picker']['snacks follows a layout the user set'] = function()
+	start({ provider = 'datamuse', picker = 'snacks' })
+	stub_curl({ http(fixture('datamuse'), 200) })
+	set_line('local', 0)
+	child.lua([[
+		local cfg = require('snacks').config
+		cfg.picker = vim.tbl_deep_extend('force', cfg.picker or {}, {
+			sources = { thesaurus = { layout = { preset = 'vertical' } } },
+		})
+		require('thesaurus').lookup()
+	]])
+	settle()
+	H.eq(open_picker(), 'snacks')
+	-- Our 30/70 split leaves the list at 30% of 60% of the screen. A
+	-- vertical layout stacks the list over the preview at full width.
+	H.eq(win_width('snacks_picker_list') > 60, true)
+end
+
+T['lookup']['loading popup shows unless loading is false'] = function()
+	-- Counted in the same chunk as the lookup, before the stubbed curl
+	-- callback runs.
+	local code = [[
+		require('thesaurus').lookup()
+		return #vim.tbl_filter(function(w)
+			return vim.api.nvim_win_get_config(w).relative ~= ''
+		end, vim.api.nvim_list_wins())
+	]]
+	for _, case in ipairs({ { true, 1 }, { false, 0 } }) do
+		start({ provider = 'datamuse', loading = case[1] })
+		stub_curl({ http(fixture('datamuse'), 200) })
+		set_line('local', 0)
+		H.eq(child.lua_get('(function() ' .. code .. ' end)()'), case[2])
+	end
+end
+
 T['lookup']['non-2xx responses are reported'] = function()
 	start({ api_key = 'bad' })
 	stub_curl({ http('<html>Unauthorized</html>', 401) })

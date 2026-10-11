@@ -32,6 +32,19 @@ local function previewer(text)
 	})
 end
 
+-- True when telescope.setup() changed the layout. It doesn't record what
+-- the user set, so compare with telescope's own defaults.
+---@return boolean
+local function user_layout()
+	local values = require('telescope.config').values
+	if values.layout_strategy ~= 'horizontal' then
+		return true
+	end
+	local layout = values.layout_config or {}
+	local h, c = layout.horizontal or {}, layout.cursor or {}
+	return h.width ~= 0.8 or h.height ~= 0.9 or c.width ~= 0.8 or c.height ~= 0.9
+end
+
 ---@param result thesaurus.Result
 ---@param pick fun(word?: string)
 ---@param opts table telescope picker options
@@ -50,30 +63,41 @@ function M.open(result, pick, opts)
 		width = math.max(width, 0.35)
 	end
 
-	require('telescope.pickers')
-		.new(opts, {
+	-- A compact popup at the cursor, unless the user chose a layout in
+	-- telescope.setup() or passed one in the options.
+	local layout = {}
+	if not (opts.layout_strategy or opts.layout_config or user_layout()) then
+		layout = {
 			layout_strategy = 'cursor',
 			layout_config = {
 				prompt_position = 'top',
 				width = width,
 				height = 0.55,
 			},
-			prompt_title = result.title or '',
-			results_title = '',
-			finder = require('telescope.finders').new_table({
-				results = result.candidates,
-			}),
-			sorter = require('telescope.config').values.generic_sorter(opts),
-			previewer = preview,
-			attach_mappings = function()
-				actions.select_default:replace(function(prompt_bufnr)
-					local selection = action_state.get_selected_entry()
-					actions.close(prompt_bufnr)
-					pick(selection and selection[1])
-				end)
-				return true
-			end,
-		})
+		}
+	end
+
+	require('telescope.pickers')
+		.new(
+			opts,
+			vim.tbl_extend('error', layout, {
+				prompt_title = result.title or '',
+				results_title = '',
+				finder = require('telescope.finders').new_table({
+					results = result.candidates,
+				}),
+				sorter = require('telescope.config').values.generic_sorter(opts),
+				previewer = preview,
+				attach_mappings = function()
+					actions.select_default:replace(function(prompt_bufnr)
+						local selection = action_state.get_selected_entry()
+						actions.close(prompt_bufnr)
+						pick(selection and selection[1])
+					end)
+					return true
+				end,
+			})
+		)
 		:find()
 end
 

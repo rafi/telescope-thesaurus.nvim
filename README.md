@@ -57,6 +57,7 @@ vim.g.thesaurus = {
   provider = 'freedictionaryapi', -- default: 'dictionaryapi'
   picker = 'telescope', -- default: 'auto', snacks if installed, else telescope
   api_key = nil, -- dictionaryapi.com key, default: $DICTIONARY_API_KEY
+  loading = true, -- show a "Loading..." popup during a lookup
 }
 ```
 
@@ -103,7 +104,23 @@ See `:h thesaurus` for details.
 
 For an unknown word, the picker lists suggestions. Picking one looks it up.
 
+### Layout
+
+The picker is compact by default: a popup at the cursor in telescope, and a
+30% list with a 70% preview in snacks. Your own layout wins:
+
+- telescope: set `layout_strategy` or `layout_config` in
+  `telescope.setup({ defaults = ... })`, or under `extensions.thesaurus`.
+- snacks: set `picker.layout`, or `picker.sources.thesaurus.layout`.
+
+### Preview
+
+The preview is markdown (filetype `markdown`), so a markdown renderer such as
+[render-markdown.nvim] styles it. Datamuse has no definitions, so it has no
+preview.
+
 [Neovim]: https://github.com/neovim/neovim
+[render-markdown.nvim]: https://github.com/MeanderingProgrammer/render-markdown.nvim
 [snacks.nvim]: https://github.com/folke/snacks.nvim
 [telescope.nvim]: https://github.com/nvim-telescope/telescope.nvim
 [dictionaryapi.com]: https://www.dictionaryapi.com/

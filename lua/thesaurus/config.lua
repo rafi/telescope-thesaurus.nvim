@@ -8,6 +8,7 @@
 ---@field provider thesaurus.ProviderName Where words are looked up.
 ---@field picker thesaurus.PickerName|'auto' Picker UI. 'auto' uses snacks.nvim, else telescope.nvim.
 ---@field api_key? string dictionaryapi.com key, else $DICTIONARY_API_KEY.
+---@field loading boolean Show a "Loading..." popup during a lookup.
 
 ---User options. Every field is optional.
 ---@class (partial) thesaurus.Opts: thesaurus.Config
@@ -24,7 +25,7 @@ M.providers = { 'dictionaryapi', 'datamuse', 'freedictionaryapi' }
 M.picker_names = { 'auto', 'snacks', 'telescope' }
 
 ---@type thesaurus.Config
-M.defaults = { provider = 'dictionaryapi', picker = 'auto' }
+M.defaults = { provider = 'dictionaryapi', picker = 'auto', loading = true }
 
 -- Options from telescope.setup({ extensions = { thesaurus = ... } }).
 local telescope_opts ---@type table?
@@ -43,6 +44,7 @@ function M.validate(opts, prefix)
 			return v == nil or vim.tbl_contains(M.picker_names, v)
 		end, 'one of ' .. table.concat(M.picker_names, ', '))
 		vim.validate('api_key', opts.api_key, 'string', true)
+		vim.validate('loading', opts.loading, 'boolean', true)
 	end)
 	if ok then
 		return true
@@ -56,7 +58,9 @@ end
 function M.unknown_keys(opts)
 	local keys = {}
 	for key in pairs(opts) do
-		if not vim.tbl_contains({ 'provider', 'picker', 'api_key' }, key) then
+		if
+			not vim.tbl_contains({ 'provider', 'picker', 'api_key', 'loading' }, key)
+		then
 			table.insert(keys, tostring(key))
 		end
 	end
